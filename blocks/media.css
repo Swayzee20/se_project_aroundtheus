@@ -1,0 +1,19 @@
+.media {
+  margin: 0 auto;
+  padding-top: 51px;
+}
+.media__list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  grid-column-gap: 17px;
+  grid-row-gap: 20px;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+@media screen and (max-width: 580px) {
+  .media {
+    padding-top: 36px;
+  }
+}
