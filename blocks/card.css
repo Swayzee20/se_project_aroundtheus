@@ -1,5 +1,4 @@
 .card {
-  height: 361px;
   width: 282px;
   color: black;
   background-size: cover;
@@ -17,8 +16,7 @@
   margin: 0;
   background-color: white;
   /* width: 282px; */
-  height: 79px;
-  padding: 0 20px;
+  padding: 25px 20px;
   justify-content: space-between;
   border-radius: 0 0 10px 10px;
   align-items: center;
@@ -40,6 +38,8 @@
   border: none;
   align-self: center;
   object-fit: cover;
+  transition: 0.2s;
+  cursor: pointer;
 }
 .card__like-button:hover {
   opacity: 50%;

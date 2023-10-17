@@ -10,13 +10,13 @@
   margin: 0 auto;
   max-width: 880px;
 }
-@media screen and (max-width: 580px) {
-  .page {
-    max-width: 320px;
-  }
-}
 @media screen and (max-width: 880px) {
   .page {
     max-width: 581px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .page {
+    max-width: 320px;
   }
 }
