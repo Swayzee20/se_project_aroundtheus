@@ -75,7 +75,6 @@
 }
 @media screen and (max-width: 580px) {
   .profile {
-    /* display: flex; */
     flex-direction: column;
   }
   .profile__avatar {
@@ -86,6 +85,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    padding-top: 25px;
   }
   .profile__title {
     font-size: 22px;
