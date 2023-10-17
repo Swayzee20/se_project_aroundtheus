@@ -96,3 +96,8 @@
     border: 2px solid white;
   }
 }
+@media screen and (max-width: 880px) {
+  .profile__info {
+    grid-template-columns: minmax(auto, 180px) auto;
+  }
+}
