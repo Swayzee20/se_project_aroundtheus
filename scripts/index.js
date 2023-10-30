@@ -51,8 +51,15 @@ let initialCards = [
 const editButton = document.querySelector(".profile__edit-button");
 const profileModal = document.querySelector(".modal");
 const closeButton = document.querySelector(".modal__close");
+const profileName = document.querySelector(".profile__title");
+const profileDesc = document.querySelector(".profile__description");
+const inputName = document.querySelector(".modal__input-name");
+const inputDesc = document.querySelector(".modal__input-description");
+
 function toggleModal() {
   profileModal.classList.toggle("modal_opened");
+  inputName.value = profileName.textContent;
+  inputDesc.value = profileDesc.textContent;
 }
 editButton.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
