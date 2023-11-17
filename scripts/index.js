@@ -24,21 +24,28 @@ const initialCards = [
     link: "https://images.unsplash.com/photo-1662283804757-ef81acd5471e?auto=format&fit=crop&q=80&w=3165&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
+const profileModal = document.querySelector("#edit-modal");
+const newCardModal = document.querySelector("#add-modal");
 const editButton = document.querySelector(".profile__edit-button");
-const closeButton = document.querySelector(".modal__close");
+const profileCloseButton = profileModal.querySelector(".modal__close");
+const addCardCloseButton = newCardModal.querySelector(".modal__close");
+const addButton = document.querySelector(".profile__add-button");
 const profileName = document.querySelector(".profile__title");
 const profileDesc = document.querySelector(".profile__description");
 const inputName = document.querySelector(".modal__input-name");
 const inputDesc = document.querySelector(".modal__input-description");
 const profileForm = document.querySelector("#edit-profile-form");
-const profileModal = document.querySelector("#edit-modal");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
-function toggleModal() {
-  profileModal.classList.toggle("modal_opened");
-  inputName.value = profileName.textContent;
-  inputDesc.value = profileDesc.textContent;
+// functions
+// function toggleModal() {
+//   profileModal.classList.toggle("modal_opened");
+inputName.value = profileName.textContent;
+inputDesc.value = profileDesc.textContent;
+// }
+function toggleModal(modal) {
+  modal.classList.toggle("modal_opened");
 }
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -55,11 +62,18 @@ function getCardElement(data) {
   cardImage.alt = data.name;
   return cardElement;
 }
-
-editButton.addEventListener("click", toggleModal);
-closeButton.addEventListener("click", toggleModal);
-profileForm.addEventListener("submit", handleProfileFormSubmit);
 initialCards.forEach(function (data) {
   const cardElement = getCardElement(data);
   mediaList.append(cardElement);
 });
+
+// buttons
+editButton.addEventListener("click", () => toggleModal(profileModal));
+profileCloseButton.addEventListener("click", () => toggleModal(profileModal));
+profileForm.addEventListener("submit", handleProfileFormSubmit);
+addButton.addEventListener("click", () => {
+  inputName.value = profileName.textContent;
+  inputDesc.value = profileDesc.textContent;
+  toggleModal(newCardModal);
+});
+addCardCloseButton.addEventListener("click", () => toggleModal(newCardModal));

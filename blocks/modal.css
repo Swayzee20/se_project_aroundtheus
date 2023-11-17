@@ -10,7 +10,6 @@
   right: 0;
   z-index: 999;
   padding: 0 19px;
-  min-width: 320px;
 }
 .modal_opened {
   display: flex;
@@ -79,8 +78,8 @@
   .modal__container {
     width: 282px;
     height: 322px;
-    padding: 25px 0;
-    align-items: center;
+    padding: 25px 25px;
+    /* align-items: center; */
     box-sizing: border-box;
   }
   .modal__form {
