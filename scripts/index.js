@@ -59,8 +59,7 @@ function getCardElement(data) {
 editButton.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
 profileForm.addEventListener("submit", handleProfileFormSubmit);
-for (let i = 0; i < initialCards.length; i++) {
-  const data = initialCards[i];
+initialCards.forEach(function (data) {
   const cardElement = getCardElement(data);
   mediaList.append(cardElement);
-}
+});
