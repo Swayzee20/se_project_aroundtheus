@@ -34,33 +34,59 @@ const profileName = document.querySelector(".profile__title");
 const profileDesc = document.querySelector(".profile__description");
 const inputName = document.querySelector(".modal__input-name");
 const inputDesc = document.querySelector(".modal__input-description");
+const newCardTitle = document.querySelector(".modal__input-title");
+const newCardURL = document.querySelector(".modal__input-url");
 const profileForm = document.querySelector("#edit-profile-form");
+const addCardForm = document.querySelector("#add-card-form");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
-// functions
-// function toggleModal() {
-//   profileModal.classList.toggle("modal_opened");
-inputName.value = profileName.textContent;
-inputDesc.value = profileDesc.textContent;
-// }
+
 function toggleModal(modal) {
   modal.classList.toggle("modal_opened");
 }
+//event handlers
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = inputName.value;
   profileDesc.textContent = inputDesc.value;
-  toggleModal();
+  toggleModal(profileModal);
 }
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  addNewCard();
+  toggleModal(newCardModal);
+  newCardTitle.value = "";
+  newCardURL.value = "";
+}
+//adding cards
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
+
   cardTitle.textContent = data.name;
   cardImage.src = data.link;
   cardImage.alt = data.name;
   return cardElement;
+}
+function addNewCard() {
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+  cardTitle.textContent = newCardTitle.value;
+  cardImage.src = newCardURL.value;
+  cardImage.alt = newCardTitle.value;
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
+
+  mediaList.prepend(cardElement);
 }
 initialCards.forEach(function (data) {
   const cardElement = getCardElement(data);
@@ -68,12 +94,15 @@ initialCards.forEach(function (data) {
 });
 
 // buttons
-editButton.addEventListener("click", () => toggleModal(profileModal));
-profileCloseButton.addEventListener("click", () => toggleModal(profileModal));
-profileForm.addEventListener("submit", handleProfileFormSubmit);
-addButton.addEventListener("click", () => {
+editButton.addEventListener("click", () => {
   inputName.value = profileName.textContent;
   inputDesc.value = profileDesc.textContent;
+  toggleModal(profileModal);
+});
+profileCloseButton.addEventListener("click", () => toggleModal(profileModal));
+profileForm.addEventListener("submit", handleProfileFormSubmit);
+addCardForm.addEventListener("submit", handleCardFormSubmit);
+addButton.addEventListener("click", () => {
   toggleModal(newCardModal);
 });
 addCardCloseButton.addEventListener("click", () => toggleModal(newCardModal));
