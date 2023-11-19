@@ -44,15 +44,18 @@ const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
 
-function toggleModal(modal) {
-  modal.classList.toggle("modal_opened");
+function openPopup(popup) {
+  popup.classList.add("modal_opened");
+}
+function closePopup(popup) {
+  popup.classList.remove("modal_opened");
 }
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = inputName.value;
   profileDesc.textContent = inputDesc.value;
-  toggleModal(profileModal);
+  closePopup(profileModal);
 }
 
 function addCard(data, wrapper) {
@@ -64,7 +67,7 @@ function handleCardFormSubmit(evt) {
   const name = newCardTitle.value;
   const link = newCardURL.value;
   addCard({ name, link }, mediaList);
-  toggleModal(newCardModal);
+  closePopup(newCardModal);
   newCardTitle.value = "";
   newCardURL.value = "";
 }
@@ -81,11 +84,12 @@ function getCardElement(data) {
     cardElement.remove();
   });
   cardImage.addEventListener("click", () => {
-    imageModal.classList.toggle("modal_opened");
+    openPopup(imageModal);
     const previewImage = document.querySelector(".modal__image");
     const previewImageDescr = document.querySelector(
       ".modal__image-description"
     );
+    previewImage.alt = data.name;
     previewImage.src = data.link;
     previewImageDescr.textContent = data.name;
   });
@@ -104,13 +108,13 @@ initialCards.forEach(function (data) {
 editButton.addEventListener("click", () => {
   inputName.value = profileName.textContent;
   inputDesc.value = profileDesc.textContent;
-  toggleModal(profileModal);
+  openPopup(profileModal);
 });
-profileCloseButton.addEventListener("click", () => toggleModal(profileModal));
+profileCloseButton.addEventListener("click", () => closePopup(profileModal));
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 addCardForm.addEventListener("submit", handleCardFormSubmit);
 addButton.addEventListener("click", () => {
-  toggleModal(newCardModal);
+  openPopup(newCardModal);
 });
-addCardCloseButton.addEventListener("click", () => toggleModal(newCardModal));
-imageModalCloseButton.addEventListener("click", () => toggleModal(imageModal));
+addCardCloseButton.addEventListener("click", () => closePopup(newCardModal));
+imageModalCloseButton.addEventListener("click", () => closePopup(imageModal));
