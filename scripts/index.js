@@ -43,6 +43,7 @@ const addCardForm = document.querySelector("#add-card-form");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
+// const formInput = profileForm.querySelector(".modal__input");
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
@@ -103,8 +104,46 @@ initialCards.forEach(function (data) {
   const cardElement = getCardElement(data);
   mediaList.append(cardElement);
 });
-
+// const formError = profileForm.querySelector(`.${formInput.id}-error`);
+// console.log(profileForm.querySelector(`${formInput.id}-error`));
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add("modal__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("modal__input-error_active");
+};
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove("modal__input_type_error");
+  errorElement.classList.remove("modal__input-error_active");
+  errorElement.textContent = "";
+};
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+// console.log(formInput.id);
 // Event Listeners
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(".modal__input"));
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      checkInputValidity(formElement, inputElement);
+    });
+  });
+};
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll(".modal__form"));
+  formList.forEach((formElement) => {
+    formElement.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement);
+  });
+};
 editButton.addEventListener("click", () => {
   inputName.value = profileName.textContent;
   inputDesc.value = profileDesc.textContent;
@@ -118,3 +157,8 @@ addButton.addEventListener("click", () => {
 });
 addCardCloseButton.addEventListener("click", () => closePopup(newCardModal));
 imageModalCloseButton.addEventListener("click", () => closePopup(imageModal));
+
+// formInput.addEventListener("input", function (evt) {
+//   checkInputValidity();
+// });
+enableValidation();

@@ -95,6 +95,18 @@
   font-weight: 400;
   font-size: 12px;
 }
+.modal__error {
+  display: none;
+}
+.modal__input_type_error {
+  border-bottom-color: red;
+}
+.modal__input-error_active {
+  display: flex;
+  position: absolute;
+  top: 125px;
+  color: red;
+}
 @media screen and (max-width: 580px) {
   .modal__container {
     width: 282px;

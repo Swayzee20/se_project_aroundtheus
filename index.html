@@ -48,21 +48,29 @@
       <div class="modal__container">
         <button type="button" class="modal__close"></button>
         <h2 class="modal__title">Edit Profile</h2>
-        <form class="modal__form" id="edit-profile-form">
+        <form class="modal__form" id="edit-profile-form" novalidate>
           <input
             class="modal__input modal__input-name"
             type="text"
             name="name"
             placeholder="Name"
             required
+            minlength="2"
+            maxlength="40"
+            id="profile-name"
           />
+          <span class="modal__error profile-name-error"></span>
           <input
             class="modal__input modal__input-description"
             type="text"
             name="description"
             placeholder="Description"
             required
+            minlength="2"
+            maxlength="200"
+            id="profile-desc"
           />
+          <span class="modal__error profile-desc-error"></span>
           <button class="modal__button" type="submit">Save</button>
         </form>
       </div>
@@ -79,14 +87,18 @@
             name="title"
             placeholder="title"
             required
+            id="card-name"
           />
+          <span class="modal___error card-name-error"></span>
           <input
             class="modal__input modal__input-url"
             type="text"
             name="url"
             placeholder="Image URL"
             required
+            id="card-url"
           />
+          <span class="modal__error card-url-error"></span>
           <button class="modal__button" type="submit">Create</button>
         </form>
       </div>
