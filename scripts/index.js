@@ -119,9 +119,15 @@ document.addEventListener("click", function (evt) {
     closePopup(profileModal);
   }
 });
+document.addEventListener("click", function (evt) {
+  if (evt.target == imageModal) {
+    closePopup(imageModal);
+  }
+});
 document.addEventListener("keydown", function (evt) {
   if (evt.keyCode === 27) {
     closePopup(newCardModal);
     closePopup(profileModal);
+    closePopup(imageModal);
   }
 });
