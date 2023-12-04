@@ -71,6 +71,8 @@
   border-bottom: 1px solid rgba(0, 0, 0, 20%);
   margin-bottom: 29px;
   height: 27px;
+  position: static;
+  display: flex;
 }
 .modal__button {
   background-color: black;
@@ -86,6 +88,12 @@
 .modal__button:hover {
   opacity: 80%;
 }
+.modal__button_inactive {
+  background-color: white;
+  opacity: 50%;
+  border: 1px solid black;
+  color: black;
+}
 .modal__image {
   max-height: 75vh;
   max-width: 75vw;
@@ -96,16 +104,18 @@
   font-size: 12px;
 }
 .modal__error {
-  display: none;
+  font-size: 12px;
+  line-height: 15px;
+  color: red;
+  position: relative;
+  bottom: 25px;
+  opacity: 0;
 }
 .modal__input_type_error {
   border-bottom-color: red;
 }
 .modal__input-error_active {
-  display: flex;
-  position: absolute;
-  top: 125px;
-  color: red;
+  opacity: 1;
 }
 @media screen and (max-width: 580px) {
   .modal__container {
