@@ -39,7 +39,7 @@ const checkInputVal = (formElement, inputElement) => {
 function setEvtListeners(formElement, options) {
   const { inputSelector } = options;
   const inputElements = Array.from(formElement.querySelectorAll(inputSelector));
-  const sbmtButton = formElement.querySelector(".popup__button");
+  const sbmtButton = formElement.querySelector(".modal__button");
   inputElements.forEach((inputElement) => {
     inputElement.addEventListener("input", (evt) => {
       checkInputVal(formElement, inputElement);
