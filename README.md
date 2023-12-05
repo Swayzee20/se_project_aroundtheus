@@ -19,6 +19,8 @@ This project is made so all the elements are displayed correctly on popular scre
 - media queries
 - Positioning
 - CSS transform
+- JavaScript
+- form validation
 
 **Images**
 
