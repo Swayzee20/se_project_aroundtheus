@@ -47,19 +47,24 @@ const mediaList = document.querySelector(".media__list");
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
-  document.addEventListener("keydown", function (evt) {
+  function escClose(evt) {
     if (evt.key === "Escape") {
       closePopup(popup);
+      console.log("ran");
     }
-  });
+    document.removeEventListener("keydown", escClose, true);
+  }
+  document.addEventListener("keydown", escClose, true);
 }
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
-  document.removeEventListener("keydown", function (evt) {
+  function escClose(evt) {
     if (evt.key === "Escape") {
       closePopup(popup);
+      console.log("ran");
     }
-  });
+  }
+  document.removeEventListener("keydown", escClose, true);
 }
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -79,8 +84,6 @@ function handleCardFormSubmit(evt) {
   addCard({ name, link }, mediaList);
   closePopup(newCardModal);
   addCardForm.reset();
-  newCardTitle.value = "";
-  newCardURL.value = "";
 }
 function getCardElement(data) {
   const cardElement = cardTemplate.cloneNode(true);
@@ -114,20 +117,6 @@ initialCards.forEach(function (data) {
   const cardElement = getCardElement(data);
   mediaList.append(cardElement);
 });
-
-const toggleButtonState = (
-  inputElements,
-  buttonElement,
-  { inactiveButtonClass }
-) => {
-  if (hasInvalInput(inputElements)) {
-    buttonElement.classList.add(inactiveButtonClass);
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.classList.remove(inactiveButtonClass);
-    buttonElement.disabled = false;
-  }
-};
 
 addButton.addEventListener("click", () => {
   openPopup(newCardModal);
