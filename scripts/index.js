@@ -133,7 +133,7 @@ profileForm.addEventListener("submit", handleProfileFormSubmit);
 addCardForm.addEventListener("submit", handleCardFormSubmit);
 addCardCloseButton.addEventListener("click", () => closePopup(newCardModal));
 imageModalCloseButton.addEventListener("click", () => closePopup(imageModal));
-document.addEventListener("click", function (evt) {
+newCardModal.addEventListener("click", function (evt) {
   if (evt.target == newCardModal) {
     closePopup(newCardModal);
   }
