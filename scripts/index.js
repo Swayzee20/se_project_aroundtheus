@@ -45,25 +45,21 @@ const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
 
+function escClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".modal_opened");
+    closePopup(openedPopup);
+    console.log("ran");
+  }
+}
+
 function openPopup(popup) {
   popup.classList.add("modal_opened");
-  function escClose(evt) {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-      console.log("ran");
-    }
-    document.removeEventListener("keydown", escClose, true);
-  }
   document.addEventListener("keydown", escClose, true);
 }
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
-  function escClose(evt) {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-      console.log("ran");
-    }
-  }
+
   document.removeEventListener("keydown", escClose, true);
 }
 function handleProfileFormSubmit(evt) {
