@@ -78,6 +78,7 @@ function handleCardFormSubmit(evt) {
   const link = newCardURL.value;
   addCard({ name, link }, mediaList);
   closePopup(newCardModal);
+  addCardForm.reset();
   newCardTitle.value = "";
   newCardURL.value = "";
 }
@@ -114,6 +115,29 @@ initialCards.forEach(function (data) {
   mediaList.append(cardElement);
 });
 
+const toggleButtonState = (
+  inputElements,
+  buttonElement,
+  { inactiveButtonClass }
+) => {
+  if (hasInvalInput(inputElements)) {
+    buttonElement.classList.add(inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+};
+
+addButton.addEventListener("click", () => {
+  openPopup(newCardModal);
+});
+editButton.addEventListener("click", () => {
+  inputName.value = profileName.textContent;
+  inputDesc.value = profileDesc.textContent;
+  openPopup(profileModal);
+});
+
 profileCloseButton.addEventListener("click", () => closePopup(profileModal));
 
 profileForm.addEventListener("submit", handleProfileFormSubmit);
@@ -135,10 +159,3 @@ imageModal.addEventListener("click", function (evt) {
     closePopup(imageModal);
   }
 });
-// document.addEventListener("keydown", function (evt) {
-//   if (evt.keyCode === 27) {
-//     closePopup(newCardModal);
-//     closePopup(profileModal);
-//     closePopup(imageModal);
-//   }
-// });

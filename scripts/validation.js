@@ -53,25 +53,20 @@ function setEvtListeners(formElement, options) {
   const { inputSelector } = options;
   const inputElements = Array.from(formElement.querySelectorAll(inputSelector));
   const sbmtButton = formElement.querySelector(options.submitButtonSelector);
+  formElement.addEventListener("reset", () => {
+    setTimeout(() => {
+      toggleButtnState(inputElements, sbmtButton, options);
+    }, 0);
+  });
   inputElements.forEach((inputElement) => {
     inputElement.addEventListener("input", (evt) => {
       checkInputVal(formElement, inputElement, options);
       toggleButtnState(inputElements, sbmtButton, options);
     });
   });
-  addButton.addEventListener("click", () => {
-    openPopup(newCardModal);
-    toggleButtnState(inputElements, sbmtButton, options);
-  });
-  editButton.addEventListener("click", () => {
-    inputName.value = profileName.textContent;
-    inputDesc.value = profileDesc.textContent;
-    toggleButtnState(inputElements, sbmtButton, options);
-    openPopup(profileModal);
-  });
 }
 
-function enableVal(options) {
+function enableValidation(options) {
   const formElements = Array.from(
     document.querySelectorAll(options.formSelector)
   );
@@ -88,4 +83,4 @@ const options = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__input-error_active",
 };
-enableVal(options);
+enableValidation(options);
