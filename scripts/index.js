@@ -40,15 +40,26 @@ const newCardTitle = document.querySelector(".modal__input-title");
 const newCardURL = document.querySelector(".modal__input-url");
 const profileForm = document.querySelector("#edit-profile-form");
 const addCardForm = document.querySelector("#add-card-form");
+const popups = document.querySelectorAll(".modal");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
+  document.addEventListener("keydown", function (evt) {
+    if (evt.key === "Escape") {
+      closePopup(popup);
+    }
+  });
 }
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
+  document.removeEventListener("keydown", function (evt) {
+    if (evt.key === "Escape") {
+      closePopup(popup);
+    }
+  });
 }
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -114,20 +125,20 @@ document.addEventListener("click", function (evt) {
     closePopup(newCardModal);
   }
 });
-document.addEventListener("click", function (evt) {
+profileModal.addEventListener("click", function (evt) {
   if (evt.target == profileModal) {
     closePopup(profileModal);
   }
 });
-document.addEventListener("click", function (evt) {
+imageModal.addEventListener("click", function (evt) {
   if (evt.target == imageModal) {
     closePopup(imageModal);
   }
 });
-document.addEventListener("keydown", function (evt) {
-  if (evt.keyCode === 27) {
-    closePopup(newCardModal);
-    closePopup(profileModal);
-    closePopup(imageModal);
-  }
-});
+// document.addEventListener("keydown", function (evt) {
+//   if (evt.keyCode === 27) {
+//     closePopup(newCardModal);
+//     closePopup(profileModal);
+//     closePopup(imageModal);
+//   }
+// });

@@ -1,14 +1,23 @@
-const showInputErr = (formElement, inputElement, errorMessage) => {
+const showInputErr = (
+  formElement,
+  inputElement,
+  { errorClass, inputErrorClass }
+) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add("modal__input_type_error");
+  inputElement.classList.add(inputErrorClass);
   errorElement.textContent = inputElement.validationMessage;
-  errorElement.classList.add("modal__input-error_active");
+  errorElement.classList.add(errorClass);
+  console.log(options.errorClass);
 };
 
-const hideInputErr = (formElement, inputElement) => {
+const hideInputErr = (
+  formElement,
+  inputElement,
+  { errorClass, inputErrorClass }
+) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove("modal__input_type_error");
-  errorElement.classList.remove("modal__input-error_active");
+  inputElement.classList.remove(inputErrorClass);
+  errorElement.classList.remove(errorClass);
   errorElement.textContent = "";
 };
 
@@ -18,42 +27,46 @@ const hasInvalInput = (inputElements) => {
   });
 };
 
-const toggleButtnState = (inputElements, buttonElement) => {
+const toggleButtnState = (
+  inputElements,
+  buttonElement,
+  { inactiveButtonClass }
+) => {
   if (hasInvalInput(inputElements)) {
-    buttonElement.classList.add("modal__button_inactive");
+    buttonElement.classList.add(inactiveButtonClass);
     buttonElement.disabled = true;
   } else {
-    buttonElement.classList.remove("modal__button_inactive");
+    buttonElement.classList.remove(inactiveButtonClass);
     buttonElement.disabled = false;
   }
 };
 
-const checkInputVal = (formElement, inputElement) => {
+const checkInputVal = (formElement, inputElement, options) => {
   if (!inputElement.validity.valid) {
-    showInputErr(formElement, inputElement, inputElement.validationMessage);
+    showInputErr(formElement, inputElement, options);
   } else {
-    hideInputErr(formElement, inputElement);
+    hideInputErr(formElement, inputElement, options);
   }
 };
 
 function setEvtListeners(formElement, options) {
   const { inputSelector } = options;
   const inputElements = Array.from(formElement.querySelectorAll(inputSelector));
-  const sbmtButton = formElement.querySelector(".modal__button");
+  const sbmtButton = formElement.querySelector(options.submitButtonSelector);
   inputElements.forEach((inputElement) => {
     inputElement.addEventListener("input", (evt) => {
-      checkInputVal(formElement, inputElement);
-      toggleButtnState(inputElements, sbmtButton);
+      checkInputVal(formElement, inputElement, options);
+      toggleButtnState(inputElements, sbmtButton, options);
     });
   });
   addButton.addEventListener("click", () => {
     openPopup(newCardModal);
-    toggleButtnState(inputElements, sbmtButton);
+    toggleButtnState(inputElements, sbmtButton, options);
   });
   editButton.addEventListener("click", () => {
     inputName.value = profileName.textContent;
     inputDesc.value = profileDesc.textContent;
-    toggleButtnState(inputElements, sbmtButton);
+    toggleButtnState(inputElements, sbmtButton, options);
     openPopup(profileModal);
   });
 }
@@ -67,7 +80,7 @@ function enableVal(options) {
   });
 }
 
-const config = {
+const options = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__button",
@@ -75,4 +88,4 @@ const config = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__input-error_active",
 };
-enableVal(config);
+enableVal(options);
