@@ -46,8 +46,6 @@ const popups = document.querySelectorAll(".modal");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
-// const newCard = new Card("#card-template", "#card-template");
-// newCard.getView();
 function escClose(evt) {
   if (evt.key === "Escape") {
     const openedPopup = document.querySelector(".modal_opened");
@@ -107,7 +105,7 @@ function getCardElement(data) {
 //   mediaList.append(cardElement);
 // });
 initialCards.forEach(function (data) {
-  const cardElement = new Card(data, "#card-template");
+  const cardElement = new Card(data, "#card-template", openPopup);
   const newCard = cardElement.getView();
   mediaList.append(newCard);
 });
@@ -141,3 +139,6 @@ imageModal.addEventListener("click", function (evt) {
     closePopup(imageModal);
   }
 });
+function printHello() {
+  console.log("hello");
+}

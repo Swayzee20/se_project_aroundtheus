@@ -1,8 +1,9 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(data, cardSelector, openPopup) {
     this._cardSelector = cardSelector;
     this._name = data.name;
     this._link = data.link;
+    this._openPopup = openPopup;
   }
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => {
@@ -12,14 +13,14 @@ export default class Card {
       this._cardElement.remove();
     });
     this._cardImage.addEventListener("click", () => {
-      openPopup(imageModal);
-      const previewImage = this._cardElement.querySelector(".modal__image");
-      const previewImageDescr = this._cardElement.querySelector(
+      this._openPopup(this._imageModal);
+      const previewImage = this._imageModal.querySelector(".modal__image");
+      const previewImageDescr = this._imageModal.querySelector(
         ".modal__image-description"
       );
       previewImage.alt = this._name;
       previewImage.src = this._link;
-      previewImageDescr.textContent = data.name;
+      previewImageDescr.textContent = this._name;
     });
   }
 
@@ -42,6 +43,7 @@ export default class Card {
     );
     this._cardImage = this._cardElement.querySelector(".card__image");
     this._cardTitle = this._cardElement.querySelector(".card__title");
+    this._imageModal = document.querySelector("#image-modal");
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
     this._cardTitle.textContent = this._name;
