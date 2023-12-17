@@ -1,3 +1,5 @@
+import Card from "../components/Card.js";
+
 const initialCards = [
   {
     name: "New York City",
@@ -44,7 +46,8 @@ const popups = document.querySelectorAll(".modal");
 const cardTemplate =
   document.querySelector("#card-template").content.firstElementChild;
 const mediaList = document.querySelector(".media__list");
-
+// const newCard = new Card("#card-template", "#card-template");
+// newCard.getView();
 function escClose(evt) {
   if (evt.key === "Escape") {
     const openedPopup = document.querySelector(".modal_opened");
@@ -93,27 +96,21 @@ function getCardElement(data) {
   deleteButton.addEventListener("click", () => {
     cardElement.remove();
   });
-  cardImage.addEventListener("click", () => {
-    openPopup(imageModal);
-    const previewImage = document.querySelector(".modal__image");
-    const previewImageDescr = document.querySelector(
-      ".modal__image-description"
-    );
-    previewImage.alt = data.name;
-    previewImage.src = data.link;
-    previewImageDescr.textContent = data.name;
-  });
   cardTitle.textContent = data.name;
   cardImage.src = data.link;
   cardImage.alt = data.name;
   return cardElement;
 }
 
+// initialCards.forEach(function (data) {
+//   const cardElement = getCardElement(data);
+//   mediaList.append(cardElement);
+// });
 initialCards.forEach(function (data) {
-  const cardElement = getCardElement(data);
-  mediaList.append(cardElement);
+  const cardElement = new Card(data, "#card-template");
+  const newCard = cardElement.getView();
+  mediaList.append(newCard);
 });
-
 addButton.addEventListener("click", () => {
   openPopup(newCardModal);
 });
