@@ -13,21 +13,19 @@ export default class Card {
       this._cardElement.remove();
     });
     this._cardImage.addEventListener("click", () => {
-      this._handleImageClick(this._imageModal);
-      const previewImage = this._imageModal.querySelector(".modal__image");
-      const previewImageDescr = this._imageModal.querySelector(
-        ".modal__image-description"
-      );
-      previewImage.alt = this._name;
-      previewImage.src = this._link;
-      previewImageDescr.textContent = this._name;
+      this._handleImageClick(this._name, this._link);
+      // const previewImage = this._imageModal.querySelector(".modal__image");
+      // const previewImageDescr = this._imageModal.querySelector(
+      //   ".modal__image-description"
+      // );
+      // previewImage.alt = this._name;
+      // previewImage.src = this._link;
+      // previewImageDescr.textContent = this._name;
     });
   }
 
   _handleLikeButton() {
-    this._cardElement
-      .querySelector(".card__like-button")
-      .classList.toggle("card__like-button_active");
+    this._likeButton.classList.toggle("card__like-button_active");
   }
   _handleDeleteCard() {
     this._cardElement.remove();

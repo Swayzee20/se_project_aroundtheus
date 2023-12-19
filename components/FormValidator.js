@@ -68,9 +68,6 @@ export default class FormValidator {
     });
   }
   enableValidation() {
-    const formElements = Array.from(this._formElement);
-    formElements.forEach((formElement) => {
-      this._setEventListeners();
-    });
+    this._setEventListeners();
   }
 }

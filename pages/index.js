@@ -58,22 +58,32 @@ const cardTemplate =
 const cardElement = cardTemplate.cloneNode(true);
 const mediaList = document.querySelector(".media__list");
 const forms = [profileForm, addCardForm];
-function escClose(evt) {
+function handleEscape(evt) {
   if (evt.key === "Escape") {
     const openedPopup = document.querySelector(".modal_opened");
     closePopup(openedPopup);
-    console.log("ran");
   }
+}
+function handleImageClick(name, link) {
+  imageModal.classList.add("modal_opened");
+  document.addEventListener("keydown", handleEscape, true);
+  const previewImage = imageModal.querySelector(".modal__image");
+  const previewImageDescr = imageModal.querySelector(
+    ".modal__image-description"
+  );
+  previewImage.alt = name;
+  previewImage.src = link;
+  previewImageDescr.textContent = name;
 }
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
-  document.addEventListener("keydown", escClose, true);
+  document.addEventListener("keydown", handleEscape, true);
 }
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
 
-  document.removeEventListener("keydown", escClose, true);
+  document.removeEventListener("keydown", handleEscape, true);
 }
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -81,10 +91,12 @@ function handleProfileFormSubmit(evt) {
   profileDesc.textContent = inputDesc.value;
   closePopup(profileModal);
 }
-
+function createCard(data) {
+  const cardElement = new Card(data, "#card-template", handleImageClick);
+  return cardElement.getView();
+}
 function addCard(data, wrapper) {
-  const cardElement = new Card(data, "#card-template", openPopup);
-  const newCard = cardElement.getView();
+  const newCard = createCard(data);
   wrapper.prepend(newCard);
 }
 function handleCardFormSubmit(evt) {
@@ -97,8 +109,7 @@ function handleCardFormSubmit(evt) {
 }
 
 initialCards.forEach(function (data) {
-  const cardElement = new Card(data, "#card-template", openPopup);
-  const newCard = cardElement.getView();
+  const newCard = createCard(data);
   mediaList.append(newCard);
 });
 addButton.addEventListener("click", () => {
