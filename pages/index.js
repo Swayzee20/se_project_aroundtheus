@@ -65,8 +65,7 @@ function handleEscape(evt) {
   }
 }
 function handleImageClick(name, link) {
-  imageModal.classList.add("modal_opened");
-  document.addEventListener("keydown", handleEscape, true);
+  openPopup(imageModal);
   const previewImage = imageModal.querySelector(".modal__image");
   const previewImageDescr = imageModal.querySelector(
     ".modal__image-description"
