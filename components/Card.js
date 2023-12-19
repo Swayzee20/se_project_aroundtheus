@@ -1,9 +1,9 @@
 export default class Card {
-  constructor(data, cardSelector, openPopup) {
+  constructor(data, cardSelector, handleImageClick) {
     this._cardSelector = cardSelector;
     this._name = data.name;
     this._link = data.link;
-    this._openPopup = openPopup;
+    this._handleImageClick = handleImageClick;
   }
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => {
@@ -13,7 +13,7 @@ export default class Card {
       this._cardElement.remove();
     });
     this._cardImage.addEventListener("click", () => {
-      this._openPopup(this._imageModal);
+      this._handleImageClick(this._imageModal);
       const previewImage = this._imageModal.querySelector(".modal__image");
       const previewImageDescr = this._imageModal.querySelector(
         ".modal__image-description"
