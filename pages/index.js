@@ -1,5 +1,6 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
 
 const initialCards = [
   {
@@ -106,11 +107,20 @@ function handleCardFormSubmit(evt) {
   closePopup(newCardModal);
   addCardForm.reset();
 }
-
-initialCards.forEach(function (data) {
-  const newCard = createCard(data);
-  mediaList.append(newCard);
-});
+const cardsList = new Section(
+  {
+    data: initialCards,
+    renderer: (cardItem) => {
+      const newCard = createCard(cardItem);
+      cardsList.addItem(newCard);
+    },
+  },
+  mediaList
+);
+// initialCards.forEach(function (data) {
+//   const newCard = createCard(data);
+//   mediaList.append(newCard);
+// });
 addButton.addEventListener("click", () => {
   openPopup(newCardModal);
 });
@@ -145,3 +155,4 @@ forms.forEach(function (form) {
   const newFormValidator = new FormValidator(settings, form);
   newFormValidator.enableValidation();
 });
+cardsList.renderItems();
