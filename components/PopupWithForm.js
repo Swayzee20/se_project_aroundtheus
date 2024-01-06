@@ -13,6 +13,10 @@ export default class PopupWithForm extends Popup {
     });
     return inputObject;
   }
+  closePopup() {
+    this._popupForm.reset();
+    super.closePopup();
+  }
   setEventListeners() {
     this._selector.addEventListener("submit", (evt) => {
       evt.preventDefault();
