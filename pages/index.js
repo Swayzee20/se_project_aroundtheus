@@ -1,5 +1,6 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 
 const initialCards = [
@@ -65,6 +66,9 @@ function handleEscape(evt) {
     closePopup(openedPopup);
   }
 }
+// const imagePopup = new PopupWithImage(imageModal, (name, link) => {
+//   imagePopup.openPopup();
+// });
 function handleImageClick(name, link) {
   openPopup(imageModal);
   const previewImage = imageModal.querySelector(".modal__image");
@@ -85,12 +89,18 @@ function closePopup(popup) {
 
   document.removeEventListener("keydown", handleEscape, true);
 }
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  profileName.textContent = inputName.value;
-  profileDesc.textContent = inputDesc.value;
+// function handleProfileFormSubmit(evt) {
+//   evt.preventDefault();
+//   profileName.textContent = inputName.value;
+//   profileDesc.textContent = inputDesc.value;
+//   closePopup(profileModal);
+// }
+// Popup With Form Instantiate
+const profilePopup = new PopupWithForm(profileModal, (data) => {
+  profileName.textContent = data.name;
+  profileDesc.textContent = data.description;
   closePopup(profileModal);
-}
+});
 function createCard(data) {
   const cardElement = new Card(data, "#card-template", handleImageClick);
   return cardElement.getView();
@@ -132,7 +142,7 @@ editButton.addEventListener("click", () => {
 
 profileCloseButton.addEventListener("click", () => closePopup(profileModal));
 
-profileForm.addEventListener("submit", handleProfileFormSubmit);
+// profileForm.addEventListener("submit", handleProfileFormSubmit);
 addCardForm.addEventListener("submit", handleCardFormSubmit);
 addCardCloseButton.addEventListener("click", () => closePopup(newCardModal));
 imageModalCloseButton.addEventListener("click", () => closePopup(imageModal));
@@ -156,3 +166,5 @@ forms.forEach(function (form) {
   newFormValidator.enableValidation();
 });
 cardsList.renderItems();
+
+profilePopup.setEventListeners();
