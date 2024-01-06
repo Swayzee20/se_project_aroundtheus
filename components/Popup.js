@@ -17,6 +17,7 @@ export default class Popup {
     }
   }
   setEventListeners() {
+    console.log(this._selector);
     this._selector
       .querySelector(".modal__close")
       .addEventListener("click", () => this.closePopup());

@@ -95,7 +95,7 @@ function closePopup(popup) {
 //   profileDesc.textContent = inputDesc.value;
 //   closePopup(profileModal);
 // }
-// Popup With Form Instantiate
+//Popup With Form Instantiate
 const profilePopup = new PopupWithForm(profileModal, (data) => {
   profileName.textContent = data.name;
   profileDesc.textContent = data.description;
@@ -140,7 +140,7 @@ editButton.addEventListener("click", () => {
   openPopup(profileModal);
 });
 
-profileCloseButton.addEventListener("click", () => closePopup(profileModal));
+// profileCloseButton.addEventListener("click", () => closePopup(profileModal));
 
 // profileForm.addEventListener("submit", handleProfileFormSubmit);
 addCardForm.addEventListener("submit", handleCardFormSubmit);
@@ -151,11 +151,11 @@ newCardModal.addEventListener("click", function (evt) {
     closePopup(newCardModal);
   }
 });
-profileModal.addEventListener("click", function (evt) {
-  if (evt.target == profileModal) {
-    closePopup(profileModal);
-  }
-});
+// profileModal.addEventListener("click", function (evt) {
+//   if (evt.target == profileModal) {
+//     closePopup(profileModal);
+//   }
+// });
 imageModal.addEventListener("click", function (evt) {
   if (evt.target == imageModal) {
     closePopup(imageModal);
