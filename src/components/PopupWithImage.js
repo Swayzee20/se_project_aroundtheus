@@ -1,11 +1,11 @@
 import Popup from "./Popup.js";
 export default class PopupWithImage extends Popup {
-  constructor(selector) {
-    super(selector);
+  constructor(popupElement) {
+    super(popupElement);
   }
   openPopup(data) {
-    const previewImage = this._selector.querySelector(".modal__image");
-    const previewImageDescr = this._selector.querySelector(
+    const previewImage = this._popupElement.querySelector(".modal__image");
+    const previewImageDescr = this._popupElement.querySelector(
       ".modal__image-description"
     );
 
