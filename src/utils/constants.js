@@ -32,4 +32,8 @@ const settings = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__input-error_active",
 };
-export { initialCards, settings };
+const profileInfo = {
+  nameSelector: ".profile__title",
+  aboutMeSelector: ".profile__description",
+};
+export { initialCards, settings, profileInfo };

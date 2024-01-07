@@ -4,8 +4,8 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, settings } from "../utils/constants.js";
-import "../pages/index.css";
+import { initialCards, settings, profileInfo } from "../utils/constants.js";
+import "./index.css";
 
 // const settings = {
 //   formSelector: ".modal__form",
@@ -32,7 +32,7 @@ const profileForm = document.querySelector("#edit-profile-form");
 const addCardForm = document.querySelector("#add-card-form");
 const mediaList = document.querySelector(".media__list");
 const forms = [profileForm, addCardForm];
-const profileInfo = [profileName, profileDesc];
+// const profileInfo = [profileName, profileDesc];
 const profileInputs = [inputName, inputDesc];
 //Popups
 const imagePopup = new PopupWithImage(imageModal);
@@ -48,8 +48,6 @@ const profilePopup = new PopupWithForm(profileModal, (data) => {
   profilePopup.closePopup();
 });
 const cardForm = new PopupWithForm(newCardModal, (data) => {
-  newCardTitle.value = data.title;
-  newCardURL.value = data.url;
   const name = newCardTitle.value;
   const link = newCardURL.value;
   addCard({ name, link }, mediaList);
@@ -61,7 +59,16 @@ function createCard(data) {
 }
 function addCard(data, wrapper) {
   const newCard = createCard(data);
-  wrapper.prepend(newCard);
+  const addNewCard = new Section(
+    {
+      data: newCard,
+      renderer: () => {
+        mediaList.prepend(newCard);
+      },
+    },
+    mediaList
+  );
+  addNewCard.renderItem();
 }
 const cardsList = new Section(
   {
@@ -77,19 +84,20 @@ addButton.addEventListener("click", () => {
   cardForm.openPopup();
 });
 editButton.addEventListener("click", () => {
-  let info = userInfo.getUserInfo();
-  inputName.value = info.username;
-  inputDesc.value = info.description;
+  const info = userInfo.getUserInfo();
+  inputName.value = info.name;
+  inputDesc.value = info.about;
   profilePopup.openPopup();
 });
-
-imageModalCloseButton.addEventListener("click", () => imagePopup.closePopup());
 
 forms.forEach(function (form) {
   const newFormValidator = new FormValidator(settings, form);
   newFormValidator.enableValidation();
 });
-const userInfo = new UserInfo(profileInfo);
+const userInfo = new UserInfo(
+  profileInfo.nameSelector,
+  profileInfo.aboutMeSelector
+);
 cardsList.renderItems();
 
 profilePopup.setEventListeners();
