@@ -93,6 +93,10 @@
   opacity: 50%;
   border: 1px solid black;
   color: black;
+  cursor: default;
+}
+.modal__button_inactive:hover {
+  opacity: 0.5;
 }
 .modal__image {
   max-height: 75vh;
