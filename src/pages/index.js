@@ -42,9 +42,7 @@ function handleImageClick(name, link) {
 
 //Popup Forms
 const profilePopup = new PopupWithForm(profileModal, (data) => {
-  const info = userInfo.setUserInfo(profileInputs);
-  profileName.textContent = info.name;
-  profileDesc.textContent = info.description;
+  userInfo.setUserInfo(profileInputs);
   profilePopup.closePopup();
 });
 const cardForm = new PopupWithForm(newCardModal, (data) => {
@@ -59,16 +57,7 @@ function createCard(data) {
 }
 function addCard(data, wrapper) {
   const newCard = createCard(data);
-  const addNewCard = new Section(
-    {
-      data: newCard,
-      renderer: () => {
-        mediaList.prepend(newCard);
-      },
-    },
-    mediaList
-  );
-  addNewCard.renderItem();
+  cardsList.addItem(newCard);
 }
 const cardsList = new Section(
   {

@@ -4,16 +4,9 @@ export default class UserInfo {
     this._aboutMeElement = document.querySelector(aboutMeSelector);
   }
   getUserInfo() {
-    // const info = {
-    //   username: "",
-    //   description: "",
-    // };
-    // info.username = this._userInfo[0].textContent;
-    // info.description = this._userInfo[1].textContent;
-    // return info;
     return {
       name: this._nameElement.textContent,
-      about: this.aboutMeElement,
+      about: this._aboutMeElement.textContent,
     };
   }
   setUserInfo(data) {
@@ -21,7 +14,7 @@ export default class UserInfo {
     data.forEach((input) => {
       inputObject[input.name] = input.value;
     });
-    console.log(inputObject);
-    return inputObject;
+    this._nameElement.textContent = inputObject.name;
+    this._aboutMeElement.textContent = inputObject.description;
   }
 }
