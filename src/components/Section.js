@@ -9,12 +9,15 @@ export default class Section {
       this._renderer(item);
     });
   }
-  //This function is used to add a single card from the new card form
-  //since it is not an array
+  //This function renders the new cards
+  //since it is not an array/then addItem adds them
   renderItem() {
     this._renderer(this._items);
   }
+  //i changed this to "prepend" but this not only
+  // adds new cards, it also adds the array of initial cards
+  // so i'm not sure if its correct
   addItem(element) {
-    this._container.append(element);
+    this._container.prepend(element);
   }
 }

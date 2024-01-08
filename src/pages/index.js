@@ -42,7 +42,8 @@ function handleImageClick(name, link) {
 
 //Popup Forms
 const profilePopup = new PopupWithForm(profileModal, (data) => {
-  userInfo.setUserInfo(profileInputs);
+  console.log(data);
+  userInfo.setUserInfo(data);
   profilePopup.closePopup();
 });
 const cardForm = new PopupWithForm(newCardModal, (data) => {
@@ -84,8 +85,9 @@ forms.forEach(function (form) {
   newFormValidator.enableValidation();
 });
 const userInfo = new UserInfo(
-  profileInfo.nameSelector,
-  profileInfo.aboutMeSelector
+  profileInfo
+  // profileInfo.nameSelector,
+  // profileInfo.aboutMeSelector
 );
 cardsList.renderItems();
 
