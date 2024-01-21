@@ -4,6 +4,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
 import { initialCards, settings, profileInfo } from "../utils/constants.js";
 import "./index.css";
 
@@ -44,6 +45,7 @@ function handleImageClick(name, link) {
 const profilePopup = new PopupWithForm(profileModal, (data) => {
   console.log(data);
   userInfo.setUserInfo(data);
+  api.saveUserInfo(data);
   profilePopup.closePopup();
 });
 const cardForm = new PopupWithForm(newCardModal, (data) => {
@@ -94,3 +96,26 @@ cardsList.renderItems();
 profilePopup.setEventListeners();
 cardForm.setEventListeners();
 imagePopup.setEventListeners();
+const apiInfo = {
+  url: "https://around-api.en.tripleten-services.com/v1/users/me",
+};
+
+const api = new Api("https://around-api.en.tripleten-services.com/v1");
+
+// fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+//   method: "PATCH",
+//   headers: {
+//     authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     name: "Josue Flores",
+//     about: "Programmer",
+//   }),
+// });
+
+Promise.all([api.getUserInfo(), api.getInitialCards()]).then((res) => {
+  const profileInfo = res[0];
+  console.log(profileInfo);
+  userInfo.setUserInfo(profileInfo);
+});

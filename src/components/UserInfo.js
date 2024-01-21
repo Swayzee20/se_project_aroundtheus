@@ -15,6 +15,6 @@ export default class UserInfo {
     //   inputObject[input.name] = input.value;
     // });
     this._nameElement.textContent = data.name;
-    this._aboutMeElement.textContent = data.description;
+    this._aboutMeElement.textContent = data.about;
   }
 }
