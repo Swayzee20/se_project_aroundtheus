@@ -1,6 +1,7 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import Popup from "../components/Popup.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
@@ -21,6 +22,7 @@ const api = new Api("https://around-api.en.tripleten-services.com/v1");
 
 const profileModal = document.querySelector("#edit-modal");
 const newCardModal = document.querySelector("#add-modal");
+const deleteModal = document.querySelector("#delete-modal");
 const imageModal = document.querySelector("#image-modal");
 const editButton = document.querySelector(".profile__edit-button");
 const imageModalCloseButton = imageModal.querySelector(".modal__close");
@@ -52,6 +54,7 @@ const profilePopup = new PopupWithForm(profileModal, (data) => {
   api.saveUserInfo(data);
   profilePopup.closePopup();
 });
+const deletePopup = new PopupWithForm(deleteModal, () => {});
 // const cardForm = new PopupWithForm(newCardModal, (data) => {
 //   const name = newCardTitle.value;
 //   const link = newCardURL.value;
@@ -59,8 +62,25 @@ const profilePopup = new PopupWithForm(profileModal, (data) => {
 //   api.addNewCard({ name, link });
 //   cardForm.closePopup();
 // });
+
+function handleDeleteCard(cardId, cardElement) {
+  deletePopup.openPopup();
+  const id = cardId;
+  console.log(cardElement);
+  deleteModal.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    api.deleteCard(id);
+    cardElement.remove();
+    deletePopup.closePopup();
+  });
+}
 function createCard(data) {
-  const cardElement = new Card(data, "#card-template", handleImageClick);
+  const cardElement = new Card(
+    data,
+    "#card-template",
+    handleImageClick,
+    handleDeleteCard
+  );
   return cardElement.getView();
 }
 // function addCard(data, wrapper) {
@@ -98,6 +118,7 @@ const userInfo = new UserInfo(profileInfo);
 profilePopup.setEventListeners();
 // cardForm.setEventListeners();
 imagePopup.setEventListeners();
+deletePopup.setEventListeners();
 const apiInfo = {
   url: "https://around-api.en.tripleten-services.com/v1/users/me",
 };
@@ -138,8 +159,11 @@ Promise.all([api.getUserInfo(), api.getInitialCards()]).then((res) => {
   const cardForm = new PopupWithForm(newCardModal, (data) => {
     const name = newCardTitle.value;
     const link = newCardURL.value;
-    addCard({ name, link }, mediaList);
-    api.addNewCard({ name, link });
+    api.addNewCard({ name, link }).then((res) => {
+      const _id = res._id;
+      console.log(_id);
+      addCard({ name, link, _id }, mediaList);
+    });
     cardForm.closePopup();
   });
   addButton.addEventListener("click", () => {
@@ -148,5 +172,27 @@ Promise.all([api.getUserInfo(), api.getInitialCards()]).then((res) => {
   cardsList.renderItems();
   cardForm.setEventListeners();
 });
-const cards = { data: api.getInitialCards() };
-console.log(cards.data);
+const cardIds = [
+  { id: "65add9efe1454c001ad83478" },
+  { id: "65add9c9e1454c001ad83465" },
+  { id: "65add94fe1454c001ad83454" },
+  { id: "65add94ee1454c001ad83447" },
+  { id: "65adb46de1454c001ad830fb" },
+  { id: "65ad74b7e1454c001ad82b1a" },
+];
+// cardIds.forEach((item) => {
+//   api.deleteCard(item.id);
+// });
+// api.getInitialCards().then((res) => {
+//   console.log(res);
+// });
+// api.addNewCard({
+//   name: "New York",
+//   link: "https://images.unsplash.com/photo-1512850183-6d7990f42385?auto=format&fit=crop&q=80&w=3087&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+// }).then();
+// api.getInitialCards().then((res) => {
+//   res.forEach((item) => {
+//     console.log(item._id);
+//     api.deleteCard(item._id);
+//   });
+// });

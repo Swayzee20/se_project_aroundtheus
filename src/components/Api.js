@@ -49,7 +49,13 @@ export default class Api {
       body: JSON.stringify({
         name: cardInfo.name,
         link: cardInfo.link,
+        _id: cardInfo.id,
       }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
     });
   }
   deleteCard(id) {

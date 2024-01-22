@@ -115,12 +115,8 @@
       <div class="modal__container">
         <button type="button" class="modal__close"></button>
         <h2 class="modal__title">Are you sure?</h2>
-          <button
-            class="modal__button"
-            type="submit"
-          >
-            Yes
-          </button>
+        <form class="modal__form" id="delete-card-form" novalidate>
+          <button class="modal__button" type="submit">Yes</button>
         </form>
       </div>
     </div>
@@ -133,7 +129,7 @@
     </div>
     <template id="card-template">
       <li class="card">
-        <img src="" alt="" class="card__image" />
+        <img src="" alt="" class="card__image" id="" />
         <button type="button" class="card__delete-button"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
