@@ -43,13 +43,21 @@ export default class Api {
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: {
-        authroization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
+        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: "",
-        link: "",
+        name: cardInfo.name,
+        link: cardInfo.link,
       }),
+    });
+  }
+  deleteCard(id) {
+    return fetch(`${this._url}/cards/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
+      },
     });
   }
 }

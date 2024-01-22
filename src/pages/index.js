@@ -17,6 +17,8 @@ import "./index.css";
 //   errorClass: "modal__input-error_active",
 // };
 
+const api = new Api("https://around-api.en.tripleten-services.com/v1");
+
 const profileModal = document.querySelector("#edit-modal");
 const newCardModal = document.querySelector("#add-modal");
 const imageModal = document.querySelector("#image-modal");
@@ -33,6 +35,8 @@ const profileForm = document.querySelector("#edit-profile-form");
 const addCardForm = document.querySelector("#add-card-form");
 const mediaList = document.querySelector(".media__list");
 const forms = [profileForm, addCardForm];
+// const initCards = [];
+
 // const profileInfo = [profileName, profileDesc];
 const profileInputs = [inputName, inputDesc];
 //Popups
@@ -48,33 +52,36 @@ const profilePopup = new PopupWithForm(profileModal, (data) => {
   api.saveUserInfo(data);
   profilePopup.closePopup();
 });
-const cardForm = new PopupWithForm(newCardModal, (data) => {
-  const name = newCardTitle.value;
-  const link = newCardURL.value;
-  addCard({ name, link }, mediaList);
-  cardForm.closePopup();
-});
+// const cardForm = new PopupWithForm(newCardModal, (data) => {
+//   const name = newCardTitle.value;
+//   const link = newCardURL.value;
+//   addCard({ name, link }, mediaList);
+//   api.addNewCard({ name, link });
+//   cardForm.closePopup();
+// });
 function createCard(data) {
   const cardElement = new Card(data, "#card-template", handleImageClick);
   return cardElement.getView();
 }
-function addCard(data, wrapper) {
-  const newCard = createCard(data);
-  cardsList.addItem(newCard);
-}
-const cardsList = new Section(
-  {
-    data: initialCards,
-    renderer: (cardItem) => {
-      const newCard = createCard(cardItem);
-      cardsList.addItem(newCard);
-    },
-  },
-  mediaList
-);
-addButton.addEventListener("click", () => {
-  cardForm.openPopup();
-});
+// function addCard(data, wrapper) {
+//   const newCard = createCard(data);
+//   cardsList.addItem(newCard);
+// }
+// const cardsList = new Section(
+//   {
+//     data: initialCards,
+//     renderer: (cardItem) => {
+//       console.log(cardItem);
+//       const newCard = createCard(cardItem);
+//       cardsList.addItem(newCard);
+//     },
+//   },
+//   mediaList
+// );
+// cardsList.renderItems();
+// addButton.addEventListener("click", () => {
+//   cardForm.openPopup();
+// });
 editButton.addEventListener("click", () => {
   const info = userInfo.getUserInfo();
   inputName.value = info.name;
@@ -86,36 +93,60 @@ forms.forEach(function (form) {
   const newFormValidator = new FormValidator(settings, form);
   newFormValidator.enableValidation();
 });
-const userInfo = new UserInfo(
-  profileInfo
-  // profileInfo.nameSelector,
-  // profileInfo.aboutMeSelector
-);
-cardsList.renderItems();
+const userInfo = new UserInfo(profileInfo);
 
 profilePopup.setEventListeners();
-cardForm.setEventListeners();
+// cardForm.setEventListeners();
 imagePopup.setEventListeners();
 const apiInfo = {
   url: "https://around-api.en.tripleten-services.com/v1/users/me",
 };
 
-const api = new Api("https://around-api.en.tripleten-services.com/v1");
-
-// fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
-//   method: "PATCH",
-//   headers: {
-//     authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({
-//     name: "Josue Flores",
-//     about: "Programmer",
-//   }),
+// api.getInitialCards().then((res) => {
+//   const initCards = res;
+//   console.log(initCards);
+//   const cardsList = new Section(
+//     {
+//       data: initCards,
+//       renderer: (cardItem) => {
+//         const newCard = createCard(cardItem);
+//         cardsList.addItem(newCard);
+//       },
+//     },
+//     mediaList
+//   );
+//   cardsList.renderItems();
 // });
-
 Promise.all([api.getUserInfo(), api.getInitialCards()]).then((res) => {
   const profileInfo = res[0];
-  console.log(profileInfo);
+  const initCards = res[1];
   userInfo.setUserInfo(profileInfo);
+  const cardsList = new Section(
+    {
+      data: initCards,
+      renderer: (cardItem) => {
+        const newCard = createCard(cardItem);
+        cardsList.addItem(newCard);
+      },
+    },
+    mediaList
+  );
+  function addCard(data, wrapper) {
+    const newCard = createCard(data);
+    cardsList.addItem(newCard);
+  }
+  const cardForm = new PopupWithForm(newCardModal, (data) => {
+    const name = newCardTitle.value;
+    const link = newCardURL.value;
+    addCard({ name, link }, mediaList);
+    api.addNewCard({ name, link });
+    cardForm.closePopup();
+  });
+  addButton.addEventListener("click", () => {
+    cardForm.openPopup();
+  });
+  cardsList.renderItems();
+  cardForm.setEventListeners();
 });
+const cards = { data: api.getInitialCards() };
+console.log(cards.data);
