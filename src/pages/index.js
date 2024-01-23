@@ -24,6 +24,7 @@ const profileModal = document.querySelector("#edit-modal");
 const newCardModal = document.querySelector("#add-modal");
 const deleteModal = document.querySelector("#delete-modal");
 const imageModal = document.querySelector("#image-modal");
+const profilePictureModal = document.querySelector("#profile-picture-modal");
 const editButton = document.querySelector(".profile__edit-button");
 const imageModalCloseButton = imageModal.querySelector(".modal__close");
 const addButton = document.querySelector(".profile__add-button");
@@ -35,8 +36,11 @@ const newCardTitle = document.querySelector(".modal__input-title");
 const newCardURL = document.querySelector(".modal__input-url");
 const profileForm = document.querySelector("#edit-profile-form");
 const addCardForm = document.querySelector("#add-card-form");
+const profilePictureForm = document.querySelector("#profile-picture-form");
 const mediaList = document.querySelector(".media__list");
-const forms = [profileForm, addCardForm];
+const profileImage = document.querySelector(".profile__avatar");
+const profileEditIcon = document.querySelector(".profile__avatar-icon");
+const forms = [profileForm, addCardForm, profilePictureForm];
 // const initCards = [];
 
 // const profileInfo = [profileName, profileDesc];
@@ -48,12 +52,31 @@ function handleImageClick(name, link) {
 }
 
 //Popup Forms
-const profilePopup = new PopupWithForm(profileModal, (data) => {
-  console.log(data);
+const profilePopup = new PopupWithForm(profileModal, (data, button) => {
   userInfo.setUserInfo(data);
-  api.saveUserInfo(data);
-  profilePopup.closePopup();
+  api.saveUserInfo(data).then(() => {
+    button.textContent = "Save";
+    profilePopup.closePopup();
+  });
+  button.textContent = "Saving...";
 });
+
+const profilePicturePopup = new PopupWithForm(
+  profilePictureModal,
+  (data, button) => {
+    api
+      .updatePicture(data.url)
+      .then((res) => {
+        button.textContent = "Save";
+        profilePicturePopup.closePopup();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    button.textContent = "Saving...";
+  }
+);
+
 const deletePopup = new PopupWithForm(deleteModal, () => {});
 // const cardForm = new PopupWithForm(newCardModal, (data) => {
 //   const name = newCardTitle.value;
@@ -66,7 +89,6 @@ const deletePopup = new PopupWithForm(deleteModal, () => {});
 function handleDeleteCard(cardId, cardElement) {
   deletePopup.openPopup();
   const id = cardId;
-  console.log(cardElement);
   deleteModal.addEventListener("submit", (evt) => {
     evt.preventDefault();
     api.deleteCard(id);
@@ -74,15 +96,20 @@ function handleDeleteCard(cardId, cardElement) {
     deletePopup.closePopup();
   });
 }
+function handleCardLike(isLiked, cardId) {
+  api.cardLikeToggle(isLiked, cardId);
+}
 function createCard(data) {
   const cardElement = new Card(
     data,
     "#card-template",
     handleImageClick,
-    handleDeleteCard
+    handleDeleteCard,
+    handleCardLike
   );
   return cardElement.getView();
 }
+
 // function addCard(data, wrapper) {
 //   const newCard = createCard(data);
 //   cardsList.addItem(newCard);
@@ -119,6 +146,17 @@ profilePopup.setEventListeners();
 // cardForm.setEventListeners();
 imagePopup.setEventListeners();
 deletePopup.setEventListeners();
+profilePicturePopup.setEventListeners();
+profileImage.addEventListener("mouseover", () => {
+  profileEditIcon.style.visibility = "visible";
+});
+profileImage.addEventListener("mouseout", () => {
+  profileEditIcon.style.visibility = "hidden";
+});
+profileImage.addEventListener("click", () => {
+  profilePicturePopup.openPopup();
+});
+
 const apiInfo = {
   url: "https://around-api.en.tripleten-services.com/v1/users/me",
 };
@@ -138,48 +176,52 @@ const apiInfo = {
 //   );
 //   cardsList.renderItems();
 // });
-Promise.all([api.getUserInfo(), api.getInitialCards()]).then((res) => {
-  const profileInfo = res[0];
-  const initCards = res[1];
-  userInfo.setUserInfo(profileInfo);
-  const cardsList = new Section(
-    {
-      data: initCards,
-      renderer: (cardItem) => {
-        const newCard = createCard(cardItem);
-        cardsList.addItem(newCard);
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then((res) => {
+    const profileInfo = res[0];
+    const initCards = res[1];
+    userInfo.setUserInfo(profileInfo);
+    const cardsList = new Section(
+      {
+        data: initCards,
+        renderer: (cardItem) => {
+          const newCard = createCard(cardItem);
+          cardsList.addItem(newCard);
+        },
       },
-    },
-    mediaList
-  );
-  function addCard(data, wrapper) {
-    const newCard = createCard(data);
-    cardsList.addItem(newCard);
-  }
-  const cardForm = new PopupWithForm(newCardModal, (data) => {
-    const name = newCardTitle.value;
-    const link = newCardURL.value;
-    api.addNewCard({ name, link }).then((res) => {
-      const _id = res._id;
-      console.log(_id);
-      addCard({ name, link, _id }, mediaList);
+      mediaList
+    );
+    function addCard(data, wrapper) {
+      const newCard = createCard(data);
+      cardsList.addItem(newCard);
+    }
+    const cardForm = new PopupWithForm(newCardModal, (data, button) => {
+      const name = newCardTitle.value;
+      const link = newCardURL.value;
+      api
+        .addNewCard({ name, link })
+        .then((res) => {
+          const _id = res._id;
+          addCard({ name, link, _id }, mediaList);
+          button.textContent = "Create";
+          cardForm.closePopup();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      button.textContent = "Saving...";
     });
-    cardForm.closePopup();
+    addButton.addEventListener("click", () => {
+      cardForm.openPopup();
+    });
+    cardsList.renderItems();
+    cardForm.setEventListeners();
+  })
+  .catch((err) => {
+    console.error(err);
   });
-  addButton.addEventListener("click", () => {
-    cardForm.openPopup();
-  });
-  cardsList.renderItems();
-  cardForm.setEventListeners();
-});
-const cardIds = [
-  { id: "65add9efe1454c001ad83478" },
-  { id: "65add9c9e1454c001ad83465" },
-  { id: "65add94fe1454c001ad83454" },
-  { id: "65add94ee1454c001ad83447" },
-  { id: "65adb46de1454c001ad830fb" },
-  { id: "65ad74b7e1454c001ad82b1a" },
-];
+
 // cardIds.forEach((item) => {
 //   api.deleteCard(item.id);
 // });

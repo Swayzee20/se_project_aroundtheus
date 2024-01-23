@@ -1,13 +1,21 @@
 import Api from "../components/Api.js";
 const api = new Api("https://around-api.en.tripleten-services.com/v1");
 export default class Card {
-  constructor(data, cardSelector, handleImageClick, handleDeleteCard) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleDeleteCard,
+    handleCardLike
+  ) {
     this._cardSelector = cardSelector;
     this._name = data.name;
     this._link = data.link;
     this._id = data._id;
+    this._isLiked = data.isLiked;
     this._handleImageClick = handleImageClick;
     this._handleDeleteCard = handleDeleteCard;
+    this._handleCardLike = handleCardLike;
   }
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => {
@@ -24,6 +32,7 @@ export default class Card {
   }
 
   _handleLikeButton() {
+    this._handleCardLike(this._isLiked, this._cardImage.id);
     this._likeButton.classList.toggle("card__like-button_active");
   }
 
@@ -41,6 +50,9 @@ export default class Card {
     this._cardImage.id = this._id;
     this._cardImage.alt = this._name;
     this._cardTitle.textContent = this._name;
+    if (this._isLiked) {
+      this._likeButton.classList.add("card__like-button_active");
+    }
     this._setEventListeners();
     return this._cardElement;
   }

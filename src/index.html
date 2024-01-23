@@ -29,6 +29,11 @@
             alt="avatar"
             class="profile__avatar"
           />
+          <img
+            src="<%=require('./images/profile-edit.png')%>"
+            alt="avatar icon"
+            class="profile__avatar-icon"
+          />
           <div class="profile__info">
             <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
@@ -111,6 +116,7 @@
         </form>
       </div>
     </div>
+    <!-- delete card modal -->
     <div class="modal" id="delete-modal">
       <div class="modal__container">
         <button type="button" class="modal__close"></button>
@@ -120,6 +126,26 @@
         </form>
       </div>
     </div>
+    <!--updat profile picture modal-->
+    <div class="modal" id="profile-picture-modal">
+      <div class="modal__container">
+        <button type="button" class="modal__close"></button>
+        <h2 class="modal__title">Change profile picture</h2>
+        <form class="modal__form" id="profile-picture-form" novalidate>
+          <input
+            class="modal__input modal__input-url"
+            type="url"
+            name="url"
+            placeholder="Image URL"
+            required
+            id="profile-url"
+          />
+          <span class="modal__error profile-url-error"></span>
+          <button class="modal__button" type="submit" disabled>Save</button>
+        </form>
+      </div>
+    </div>
+    <!--image modal-->
     <div class="modal" id="image-modal">
       <div class="modal__preview">
         <button class="modal__close"></button>
