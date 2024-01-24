@@ -36,6 +36,10 @@ export default class Card {
     this._likeButton.classList.toggle("card__like-button_active");
   }
 
+  deleteCard() {
+    api.deleteCard();
+  }
+
   getView() {
     this._cardElement = document
       .querySelector(this._cardSelector)

@@ -6,6 +6,7 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
+import PopupWithFormSubmit from "../components/PopupWithFormSubmit.js";
 import { initialCards, settings, profileInfo } from "../utils/constants.js";
 import "./index.css";
 
@@ -25,6 +26,7 @@ const newCardModal = document.querySelector("#add-modal");
 const deleteModal = document.querySelector("#delete-modal");
 const imageModal = document.querySelector("#image-modal");
 const profilePictureModal = document.querySelector("#profile-picture-modal");
+const profileAvatar = document.querySelector(".profile__avatar");
 const editButton = document.querySelector(".profile__edit-button");
 const imageModalCloseButton = imageModal.querySelector(".modal__close");
 const addButton = document.querySelector(".profile__add-button");
@@ -67,6 +69,7 @@ const profilePicturePopup = new PopupWithForm(
     api
       .updatePicture(data.url)
       .then((res) => {
+        profileAvatar.src = data.url;
         button.textContent = "Save";
         profilePicturePopup.closePopup();
       })
@@ -76,26 +79,19 @@ const profilePicturePopup = new PopupWithForm(
     button.textContent = "Saving...";
   }
 );
-
-const deletePopup = new PopupWithForm(deleteModal, () => {});
-// const cardForm = new PopupWithForm(newCardModal, (data) => {
-//   const name = newCardTitle.value;
-//   const link = newCardURL.value;
-//   addCard({ name, link }, mediaList);
-//   api.addNewCard({ name, link });
-//   cardForm.closePopup();
-// });
+const deletePopup = new PopupWithFormSubmit(deleteModal);
+deletePopup.setEventListeners();
 
 function handleDeleteCard(cardId, cardElement) {
-  deletePopup.openPopup();
   const id = cardId;
-  deleteModal.addEventListener("submit", (evt) => {
-    evt.preventDefault();
+  deletePopup.openPopup();
+  deletePopup.setSubmitAction(() => {
     api.deleteCard(id);
     cardElement.remove();
     deletePopup.closePopup();
   });
 }
+// function cancelDeleteCard();
 function handleCardLike(isLiked, cardId) {
   api.cardLikeToggle(isLiked, cardId);
 }
@@ -145,7 +141,7 @@ const userInfo = new UserInfo(profileInfo);
 profilePopup.setEventListeners();
 // cardForm.setEventListeners();
 imagePopup.setEventListeners();
-deletePopup.setEventListeners();
+
 profilePicturePopup.setEventListeners();
 profileImage.addEventListener("mouseover", () => {
   profileEditIcon.style.visibility = "visible";
@@ -182,11 +178,13 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     const profileInfo = res[0];
     const initCards = res[1];
     userInfo.setUserInfo(profileInfo);
+    profileAvatar.src = profileInfo.avatar;
     const cardsList = new Section(
       {
         data: initCards,
         renderer: (cardItem) => {
           const newCard = createCard(cardItem);
+          console.log(cardItem);
           cardsList.addItem(newCard);
         },
       },
@@ -217,6 +215,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     });
     cardsList.renderItems();
     cardForm.setEventListeners();
+    //handle card delete
   })
   .catch((err) => {
     console.error(err);

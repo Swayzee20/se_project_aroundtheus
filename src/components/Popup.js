@@ -3,14 +3,18 @@ export default class Popup {
     this._popupElement = popupElement;
     this._handleEscClose = this._handleEscClose.bind(this);
   }
-  openPopup() {
+  _handleCancelDelete(id) {
+    console.log(id);
+  }
+  openPopup(id) {
     this._popupElement.classList.add("modal_opened");
     document.addEventListener("keydown", this._handleEscClose, true);
   }
-  closePopup() {
+  closePopup(id) {
     this._popupElement.classList.remove("modal_opened");
     document.removeEventListener("keydown", this._handleEscClose, true);
   }
+
   _handleEscClose(evt) {
     if (evt.key === "Escape") {
       this.closePopup();
@@ -22,6 +26,9 @@ export default class Popup {
       .querySelector(".modal__close")
       .addEventListener("click", () => {
         this.closePopup();
+        if ((this._popupElement = document.querySelector("#delete-modal"))) {
+          // this._deleteCard();
+        }
       });
     this._popupElement.addEventListener("click", (evt) => {
       if (evt.target == this._popupElement) {

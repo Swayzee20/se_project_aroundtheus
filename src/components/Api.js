@@ -96,16 +96,3 @@ export default class Api {
     });
   }
 }
-// saveUserInfo(data) {
-//   return fetch(`${this._url}/users/me`, {
-//     method: "PATCH",
-//     headers: {
-//       authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       name: data.name,
-//       about: data.about,
-//     }),
-//   });
-// }
