@@ -1,30 +1,26 @@
 export default class Api {
-  constructor(options) {
-    this._url = options;
+  constructor(url) {
+    this._url = url;
+  }
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
   }
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
         authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    });
+    }).then(this._checkResponse);
   }
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    });
+    }).then(this._checkResponse);
   }
   saveUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
@@ -37,7 +33,7 @@ export default class Api {
         name: data.name,
         about: data.about,
       }),
-    });
+    }).then(this._checkResponse);
   }
   addNewCard(cardInfo) {
     return fetch(`${this._url}/cards`, {
@@ -51,12 +47,7 @@ export default class Api {
         link: cardInfo.link,
         _id: cardInfo.id,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error: ${res.status}`);
-    });
+    }).then(this._checkResponse);
   }
   deleteCard(id) {
     return fetch(`${this._url}/cards/${id}`, {
@@ -64,7 +55,7 @@ export default class Api {
       headers: {
         authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
       },
-    });
+    }).then(this._checkResponse);
   }
   cardLikeToggle(isLiked, id) {
     if (isLiked) {
@@ -73,14 +64,14 @@ export default class Api {
         headers: {
           authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
         },
-      });
+      }).then(this._checkResponse);
     } else {
       return fetch(`${this._url}/cards/${id}/likes`, {
         method: "PUT",
         headers: {
           authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
         },
-      });
+      }).then(this._checkResponse);
     }
   }
   updatePicture(data) {
@@ -93,6 +84,6 @@ export default class Api {
       body: JSON.stringify({
         avatar: data,
       }),
-    });
+    }).then(this._checkResponse);
   }
 }
