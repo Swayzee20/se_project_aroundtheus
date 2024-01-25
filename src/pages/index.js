@@ -18,8 +18,13 @@ import "./index.css";
 //   inputErrorClass: "modal__input_type_error",
 //   errorClass: "modal__input-error_active",
 // };
-
-const api = new Api("https://around-api.en.tripleten-services.com/v1");
+const api = new Api({
+  url: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
+    "Content-Type": "application/json",
+  },
+});
 
 const profileModal = document.querySelector("#edit-modal");
 const newCardModal = document.querySelector("#add-modal");

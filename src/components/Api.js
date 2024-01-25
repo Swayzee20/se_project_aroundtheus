@@ -1,6 +1,7 @@
 export default class Api {
-  constructor(url) {
+  constructor({ url, headers }) {
     this._url = url;
+    this._header = headers;
   }
   _checkResponse(res) {
     if (res.ok) {
@@ -10,25 +11,18 @@ export default class Api {
   }
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-      },
+      headers: this._header,
     }).then(this._checkResponse);
   }
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-      },
+      headers: this._header,
     }).then(this._checkResponse);
   }
   saveUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-        "Content-Type": "application/json",
-      },
+      headers: this._header,
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -38,10 +32,7 @@ export default class Api {
   addNewCard(cardInfo) {
     return fetch(`${this._url}/cards`, {
       method: "POST",
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-        "Content-Type": "application/json",
-      },
+      headers: this._header,
       body: JSON.stringify({
         name: cardInfo.name,
         link: cardInfo.link,
@@ -52,35 +43,26 @@ export default class Api {
   deleteCard(id) {
     return fetch(`${this._url}/cards/${id}`, {
       method: "DELETE",
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-      },
+      headers: this._header,
     }).then(this._checkResponse);
   }
   cardLikeToggle(isLiked, id) {
     if (isLiked) {
       return fetch(`${this._url}/cards/${id}/likes`, {
         method: "DELETE",
-        headers: {
-          authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-        },
+        headers: this._header,
       }).then(this._checkResponse);
     } else {
       return fetch(`${this._url}/cards/${id}/likes`, {
         method: "PUT",
-        headers: {
-          authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-        },
+        headers: this._header,
       }).then(this._checkResponse);
     }
   }
   updatePicture(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
-      headers: {
-        authorization: "09c7eb58-4864-40aa-bfac-2e0d5eb72b05",
-        "Content-Type": "application/json",
-      },
+      headers: this._header,
       body: JSON.stringify({
         avatar: data,
       }),
