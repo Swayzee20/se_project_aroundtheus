@@ -26,9 +26,6 @@ export default class Popup {
       .querySelector(".modal__close")
       .addEventListener("click", () => {
         this.closePopup();
-        if ((this._popupElement = document.querySelector("#delete-modal"))) {
-          // this._deleteCard();
-        }
       });
     this._popupElement.addEventListener("click", (evt) => {
       if (evt.target == this._popupElement) {
