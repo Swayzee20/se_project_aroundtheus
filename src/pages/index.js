@@ -10,14 +10,6 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import { initialCards, settings, profileInfo } from "../utils/constants.js";
 import "./index.css";
 
-// const settings = {
-//   formSelector: ".modal__form",
-//   inputSelector: ".modal__input",
-//   submitButtonSelector: ".modal__button",
-//   inactiveButtonClass: "modal__button_inactive",
-//   inputErrorClass: "modal__input_type_error",
-//   errorClass: "modal__input-error_active",
-// };
 const api = new Api({
   url: "https://around-api.en.tripleten-services.com/v1",
   headers: {
@@ -48,9 +40,7 @@ const mediaList = document.querySelector(".media__list");
 const profileImage = document.querySelector(".profile__avatar");
 const profileEditIcon = document.querySelector(".profile__avatar-icon");
 const forms = [profileForm, addCardForm, profilePictureForm];
-// const initCards = [];
 
-// const profileInfo = [profileName, profileDesc];
 const profileInputs = [inputName, inputDesc];
 //Popups
 const imagePopup = new PopupWithImage(imageModal);
@@ -60,10 +50,10 @@ function handleImageClick(name, link) {
 
 //Popup Forms
 const profilePopup = new PopupWithForm(profileModal, (data, button) => {
-  userInfo.setUserInfo(data);
   api
     .saveUserInfo(data)
     .then(() => {
+      userInfo.setUserInfo(data);
       profilePopup.closePopup();
     })
     .catch((err) => {
@@ -81,7 +71,7 @@ const profilePicturePopup = new PopupWithForm(
     api
       .updatePicture(data.url)
       .then((res) => {
-        profileAvatar.src = data.url;
+        userInfo.setAvatar = res.avatar;
         profilePicturePopup.closePopup();
       })
       .catch((err) => {
@@ -134,25 +124,6 @@ function createCard(data) {
   return cardElement.getView();
 }
 
-// function addCard(data, wrapper) {
-//   const newCard = createCard(data);
-//   cardsList.addItem(newCard);
-// }
-// const cardsList = new Section(
-//   {
-//     data: initialCards,
-//     renderer: (cardItem) => {
-//       console.log(cardItem);
-//       const newCard = createCard(cardItem);
-//       cardsList.addItem(newCard);
-//     },
-//   },
-//   mediaList
-// );
-// cardsList.renderItems();
-// addButton.addEventListener("click", () => {
-//   cardForm.openPopup();
-// });
 editButton.addEventListener("click", () => {
   const info = userInfo.getUserInfo();
   inputName.value = info.name;
@@ -167,7 +138,6 @@ forms.forEach(function (form) {
 const userInfo = new UserInfo(profileInfo);
 
 profilePopup.setEventListeners();
-// cardForm.setEventListeners();
 imagePopup.setEventListeners();
 
 profilePicturePopup.setEventListeners();
@@ -184,22 +154,6 @@ profileImage.addEventListener("click", () => {
 const apiInfo = {
   url: "https://around-api.en.tripleten-services.com/v1/users/me",
 };
-
-// api.getInitialCards().then((res) => {
-//   const initCards = res;
-//   console.log(initCards);
-//   const cardsList = new Section(
-//     {
-//       data: initCards,
-//       renderer: (cardItem) => {
-//         const newCard = createCard(cardItem);
-//         cardsList.addItem(newCard);
-//       },
-//     },
-//     mediaList
-//   );
-//   cardsList.renderItems();
-// });
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then((res) => {
@@ -245,25 +199,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     });
     cardsList.renderItems();
     cardModal.setEventListeners();
-    //handle card delete
   })
   .catch((err) => {
     console.error(err);
   });
-
-// cardIds.forEach((item) => {
-//   api.deleteCard(item.id);
-// });
-// api.getInitialCards().then((res) => {
-//   console.log(res);
-// });
-// api.addNewCard({
-//   name: "New York",
-//   link: "https://images.unsplash.com/photo-1512850183-6d7990f42385?auto=format&fit=crop&q=80&w=3087&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-// }).then();
-// api.getInitialCards().then((res) => {
-//   res.forEach((item) => {
-//     console.log(item._id);
-//     api.deleteCard(item._id);
-//   });
-// });

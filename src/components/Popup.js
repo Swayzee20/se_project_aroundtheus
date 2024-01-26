@@ -3,9 +3,6 @@ export default class Popup {
     this._popupElement = popupElement;
     this._handleEscClose = this._handleEscClose.bind(this);
   }
-  _handleCancelDelete(id) {
-    console.log(id);
-  }
   openPopup(id) {
     this._popupElement.classList.add("modal_opened");
     document.addEventListener("keydown", this._handleEscClose, true);
