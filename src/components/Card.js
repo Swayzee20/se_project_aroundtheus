@@ -1,5 +1,3 @@
-import Api from "../components/Api.js";
-const api = new Api("https://around-api.en.tripleten-services.com/v1");
 export default class Card {
   constructor(
     data,
@@ -32,12 +30,11 @@ export default class Card {
   }
 
   _handleLikeButton() {
-    this._handleCardLike(this._isLiked, this._cardImage.id);
-    this._likeButton.classList.toggle("card__like-button_active");
+    this._handleCardLike(this._isLiked, this._id);
   }
-
-  deleteCard() {
-    api.deleteCard();
+  toggleLike() {
+    this._isLiked = !this._isLiked;
+    this._likeButton.classList.toggle("card__like-button_active");
   }
 
   getView() {

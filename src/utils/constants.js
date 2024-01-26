@@ -35,5 +35,6 @@ const settings = {
 const profileInfo = {
   nameSelector: ".profile__title",
   aboutMeSelector: ".profile__description",
+  avatarSelector: ".profile__avatar",
 };
 export { initialCards, settings, profileInfo };

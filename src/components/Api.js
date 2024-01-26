@@ -14,6 +14,11 @@ export default class Api {
       headers: this._header,
     }).then(this._checkResponse);
   }
+  getCardInfo(id) {
+    return fetch(`${this._url}/cards/${id}`, {
+      headers: this._header,
+    }).then(this._checkResponse);
+  }
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: this._header,

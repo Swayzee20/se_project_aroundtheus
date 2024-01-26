@@ -98,7 +98,10 @@ function handleDeleteCard(cardId, cardElement) {
 }
 // function cancelDeleteCard();
 function handleCardLike(isLiked, cardId) {
-  api.cardLikeToggle(isLiked, cardId);
+  api.cardLikeToggle(isLiked, cardId).then((res) => {
+    console.log(res);
+    this.toggleLike();
+  });
 }
 function createCard(data) {
   const cardElement = new Card(
@@ -183,7 +186,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     const profileInfo = res[0];
     const initCards = res[1];
     userInfo.setUserInfo(profileInfo);
-    profileAvatar.src = profileInfo.avatar;
+    // profileAvatar.src = profileInfo.avatar;
     const cardsList = new Section(
       {
         data: initCards,
