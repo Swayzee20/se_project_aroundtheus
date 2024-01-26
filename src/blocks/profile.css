@@ -4,10 +4,21 @@
   padding-top: 40px;
 }
 .profile__avatar {
+  background: transparent url(../images/profile-edit.png) center no-repeat;
   height: 120px;
   width: 120px;
   border-radius: 50%;
   margin: 0 30px 0 0;
+  cursor: pointer;
+}
+.profile__avatar:hover {
+  background: url(../images/profile-edit.png) center no-repeat;
+  opacity: 40%;
+}
+.profile__avatar-icon {
+  position: relative;
+  right: 100px;
+  visibility: hidden;
 }
 .profile__info {
   display: grid;

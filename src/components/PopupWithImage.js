@@ -5,6 +5,7 @@ export default class PopupWithImage extends Popup {
   }
   openPopup(data) {
     const previewImage = this._popupElement.querySelector(".modal__image");
+    console.log(this._popupElement);
     const previewImageDescr = this._popupElement.querySelector(
       ".modal__image-description"
     );
