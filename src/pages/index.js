@@ -71,7 +71,7 @@ const profilePicturePopup = new PopupWithForm(
     api
       .updatePicture(data.url)
       .then((res) => {
-        userInfo.setAvatar = res.avatar;
+        userInfo.setAvatar(res);
         profilePicturePopup.closePopup();
       })
       .catch((err) => {
@@ -102,12 +102,12 @@ function handleDeleteCard(cardId, cardElement) {
   });
 }
 // function cancelDeleteCard();
-function handleCardLike(isLiked, cardId) {
+function handleCardLike(isLiked, cardId, cardInstance) {
   api
     .cardLikeToggle(isLiked, cardId)
     .then((res) => {
       console.log(res);
-      this.toggleLike();
+      cardInstance.toggleLike();
     })
     .catch((err) => {
       console.error(err);
