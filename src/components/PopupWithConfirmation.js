@@ -1,5 +1,5 @@
 import Popup from "./Popup.js";
-export default class PopupWithFormSubmit extends Popup {
+export default class PopupWithConfirmation extends Popup {
   setSubmitAction(action) {
     this._handleSubmitCallback = action;
   }

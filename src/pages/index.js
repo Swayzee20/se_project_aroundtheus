@@ -6,7 +6,7 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
-import PopupWithFormSubmit from "../components/PopupWithFormSubmit.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import { initialCards, settings, profileInfo } from "../utils/constants.js";
 import "./index.css";
 
@@ -61,10 +61,17 @@ function handleImageClick(name, link) {
 //Popup Forms
 const profilePopup = new PopupWithForm(profileModal, (data, button) => {
   userInfo.setUserInfo(data);
-  api.saveUserInfo(data).then(() => {
-    button.textContent = "Save";
-    profilePopup.closePopup();
-  });
+  api
+    .saveUserInfo(data)
+    .then(() => {
+      profilePopup.closePopup();
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally((res) => {
+      button.textContent = "Save";
+    });
   button.textContent = "Saving...";
 });
 
@@ -75,33 +82,46 @@ const profilePicturePopup = new PopupWithForm(
       .updatePicture(data.url)
       .then((res) => {
         profileAvatar.src = data.url;
-        button.textContent = "Save";
         profilePicturePopup.closePopup();
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally((res) => {
+        button.textContent = "Save";
       });
     button.textContent = "Saving...";
   }
 );
-const deletePopup = new PopupWithFormSubmit(deleteModal);
+const deletePopup = new PopupWithConfirmation(deleteModal);
 deletePopup.setEventListeners();
 
 function handleDeleteCard(cardId, cardElement) {
   const id = cardId;
   deletePopup.openPopup();
   deletePopup.setSubmitAction(() => {
-    api.deleteCard(id);
-    cardElement.remove();
-    deletePopup.closePopup();
+    api
+      .deleteCard(id)
+      .then((res) => {
+        cardElement.remove();
+        deletePopup.closePopup();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   });
 }
 // function cancelDeleteCard();
 function handleCardLike(isLiked, cardId) {
-  api.cardLikeToggle(isLiked, cardId).then((res) => {
-    console.log(res);
-    this.toggleLike();
-  });
+  api
+    .cardLikeToggle(isLiked, cardId)
+    .then((res) => {
+      console.log(res);
+      this.toggleLike();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 function createCard(data) {
   const cardElement = new Card(
@@ -186,7 +206,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     const profileInfo = res[0];
     const initCards = res[1];
     userInfo.setUserInfo(profileInfo);
-    // profileAvatar.src = profileInfo.avatar;
+    userInfo.setAvatar(profileInfo);
     const cardsList = new Section(
       {
         data: initCards,
@@ -202,27 +222,29 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
       const newCard = createCard(data);
       cardsList.addItem(newCard);
     }
-    const cardForm = new PopupWithForm(newCardModal, (data, button) => {
-      const name = newCardTitle.value;
-      const link = newCardURL.value;
+    const cardModal = new PopupWithForm(newCardModal, (data, button) => {
+      const name = data.title;
+      const link = data.url;
       api
         .addNewCard({ name, link })
         .then((res) => {
           const _id = res._id;
           addCard({ name, link, _id }, mediaList);
-          button.textContent = "Create";
-          cardForm.closePopup();
+          cardModal.closePopup();
         })
         .catch((err) => {
           console.error(err);
+        })
+        .finally((res) => {
+          button.textContent = "Create";
         });
       button.textContent = "Saving...";
     });
     addButton.addEventListener("click", () => {
-      cardForm.openPopup();
+      cardModal.openPopup();
     });
     cardsList.renderItems();
-    cardForm.setEventListeners();
+    cardModal.setEventListeners();
     //handle card delete
   })
   .catch((err) => {

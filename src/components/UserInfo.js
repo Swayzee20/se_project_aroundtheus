@@ -17,6 +17,9 @@ export default class UserInfo {
     // });
     this._nameElement.textContent = data.name;
     this._aboutMeElement.textContent = data.about;
+    // this._avatarElement.src = data.avatar;
+  }
+  setAvatar(data) {
     this._avatarElement.src = data.avatar;
   }
 }
